@@ -34,11 +34,23 @@ with tab1:
 
     col1, col2 = st.columns(2)
 
+    # 時間の選択肢を生成（9:00〜18:00、30分刻み）
+    time_options = []
+    for hour in range(9, 19):
+        time_options.append(f"{hour:02d}:00")
+        if hour < 18:
+            time_options.append(f"{hour:02d}:30")
+
     with col1:
         webinar_title = st.text_input("ウェビナータイトル *", placeholder="例：要件定義と開発を進化させる生成AIの実践活用")
         event_label = st.text_input("ラベル", value="無料ウェビナー", placeholder="例：無料ウェビナー")
-        event_date = st.text_input("開催日 *", placeholder="例：2025年9月30日（火）")
-        event_time = st.text_input("開催時間 *", placeholder="例：12:00〜13:00")
+        event_date_raw = st.date_input("開催日 *", value=None, format="YYYY/MM/DD")
+
+        col_time1, col_time2 = st.columns(2)
+        with col_time1:
+            start_time = st.selectbox("開始時間 *", time_options, index=3)
+        with col_time2:
+            end_time = st.selectbox("終了時間 *", time_options, index=5)
 
     with col2:
         event_format = st.text_input("開催形式", value="オンライン（Zoom）", placeholder="例：オンライン（Zoom）")
@@ -171,9 +183,16 @@ with tab3:
         # バリデーション
         if not webinar_title:
             st.error("ウェビナータイトルを入力してください")
+        elif not event_date_raw:
+            st.error("開催日を選択してください")
         elif not cta_url:
             st.error("申し込みURLを入力してください")
         else:
+            # 日付と時間のフォーマット
+            weekdays = ["月", "火", "水", "木", "金", "土", "日"]
+            weekday = weekdays[event_date_raw.weekday()]
+            event_date = f"{event_date_raw.year}年{event_date_raw.month}月{event_date_raw.day}日（{weekday}）"
+            event_time = f"{start_time}〜{end_time}"
             # テンプレートを読み込み
             template_path = os.path.join(os.path.dirname(__file__), "templates", "webinar_lp.html")
 
