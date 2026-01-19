@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{webinar_title}}</title>
+  <meta name="description" content="{{meta_description}}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    /* ========== ヘッダー ========== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      z-index: 100;
+    }
+
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .header-logos img {
+      height: 32px;
+      width: auto;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .header-nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .header-nav a:hover {
+      color: {{primary_color}};
+    }
+
+    .header-nav .cta-btn {
+      background: {{primary_color}};
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 6px;
+      transition: opacity 0.2s;
+    }
+
+    .header-nav .cta-btn:hover {
+      color: #fff;
+      opacity: 0.85;
+    }
+
+    /* ========== メインビジュアル ========== */
+    .hero {
+      padding: 160px 40px 100px;
+      background: linear-gradient(135deg, {{primary_color}}11 0%, {{primary_color}}05 100%);
+      text-align: center;
+    }
+
+    .hero-label {
+      display: inline-block;
+      background: {{primary_color}};
+      color: #fff;
+      padding: 6px 20px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 32px;
+      color: #1a1a1a;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+    }
+
+    .hero-meta-item strong {
+      color: {{primary_color}};
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: {{primary_color}};
+      color: #fff;
+      padding: 18px 48px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px {{primary_color}}40;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px {{primary_color}}50;
+    }
+
+    /* ========== セクション共通 ========== */
+    .section {
+      padding: 80px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: {{primary_color}};
+      margin: 16px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ========== 概要説明 ========== */
+    .description {
+      background: #f9f9f9;
+    }
+
+    .description-text {
+      font-size: 17px;
+      line-height: 2;
+      text-align: center;
+      white-space: pre-line;
+    }
+
+    /* ========== 登壇内容 ========== */
+    .contents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .content-item {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 32px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .content-number {
+      background: {{primary_color}};
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .content-body h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #1a1a1a;
+    }
+
+    .content-body p {
+      color: #666;
+      line-height: 1.8;
+    }
+
+    /* ========== 登壇者 ========== */
+    .speakers {
+      background: #f9f9f9;
+    }
+
+    .speaker-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .speaker-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .speaker-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 4px solid {{primary_color}}22;
+    }
+
+    .speaker-company {
+      font-size: 13px;
+      color: {{primary_color}};
+      margin-bottom: 4px;
+    }
+
+    .speaker-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .speaker-role {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .speaker-bio {
+      font-size: 14px;
+      color: #666;
+      text-align: left;
+      line-height: 1.8;
+    }
+
+    /* ========== タイムテーブル ========== */
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .timetable th,
+    .timetable td {
+      padding: 20px 24px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .timetable th {
+      background: {{primary_color}};
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .timetable tr:hover {
+      background: #f9f9f9;
+    }
+
+    .timetable .time {
+      font-weight: 700;
+      color: {{primary_color}};
+      white-space: nowrap;
+    }
+
+    /* ========== 対象者 ========== */
+    .target {
+      background: #f9f9f9;
+    }
+
+    .target-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .target-item {
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .target-icon {
+      width: 48px;
+      height: 48px;
+      background: {{primary_color}}15;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: {{primary_color}};
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    /* ========== CTA ========== */
+    .cta-section {
+      background: linear-gradient(135deg, {{primary_color}} 0%, {{primary_color}}dd 100%);
+      padding: 80px 40px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .cta-section h2 {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 16px;
+      margin-bottom: 32px;
+      opacity: 0.9;
+    }
+
+    .btn-white {
+      display: inline-block;
+      background: #fff;
+      color: {{primary_color}};
+      padding: 18px 48px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    }
+
+    /* ========== フッター ========== */
+    .footer {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .footer-logos {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+
+    .footer-logos img {
+      height: 28px;
+      opacity: 0.8;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: #888;
+    }
+
+    /* ========== レスポンシブ ========== */
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 20px;
+      }
+
+      .header-nav {
+        display: none;
+      }
+
+      .hero {
+        padding: 120px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: 26px;
+      }
+
+      .hero-meta {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .section {
+        padding: 60px 20px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .content-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .timetable th,
+      .timetable td {
+        padding: 16px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="header-logos">
+      <img src="{{logo_url}}" alt="{{company_name}}">
+      {{#if partner_logo_url}}
+      <img src="{{partner_logo_url}}" alt="{{partner_name}}">
+      {{/if}}
+    </div>
+    <nav class="header-nav">
+      <a href="#contents">登壇内容</a>
+      <a href="#timetable">タイムテーブル</a>
+      <a href="{{cta_url}}" class="cta-btn">お申し込みはこちら</a>
+    </nav>
+  </header>
+
+  <!-- メインビジュアル -->
+  <section class="hero">
+    <span class="hero-label">{{event_label}}</span>
+    <h1>{{webinar_title}}</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <strong>日時</strong>
+        <span>{{event_date}} {{event_time}}</span>
+      </div>
+      <div class="hero-meta-item">
+        <strong>形式</strong>
+        <span>{{event_format}}</span>
+      </div>
+      <div class="hero-meta-item">
+        <strong>参加費</strong>
+        <span>{{event_price}}</span>
+      </div>
+    </div>
+    <a href="{{cta_url}}" class="btn-primary">今すぐ申し込む</a>
+  </section>
+
+  <!-- 概要説明 -->
+  <section class="section description">
+    <p class="description-text">{{description_text}}</p>
+  </section>
+
+  <!-- 登壇内容 -->
+  <section class="section" id="contents">
+    <h2 class="section-title">登壇内容</h2>
+    <div class="contents-list">
+      {{#each contents}}
+      <div class="content-item">
+        <div class="content-number">{{this.number}}</div>
+        <div class="content-body">
+          <h3>{{this.title}}</h3>
+          <p>{{this.description}}</p>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+
+  <!-- 登壇者 -->
+  <section class="section speakers">
+    <h2 class="section-title">登壇者</h2>
+    <div class="speaker-list">
+      {{#each speakers}}
+      <div class="speaker-card">
+        <img src="{{this.image}}" alt="{{this.name}}" class="speaker-image">
+        <p class="speaker-company">{{this.company}}</p>
+        <h3 class="speaker-name">{{this.name}}</h3>
+        <p class="speaker-role">{{this.role}}</p>
+        <p class="speaker-bio">{{this.bio}}</p>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+
+  <!-- タイムテーブル -->
+  <section class="section" id="timetable">
+    <h2 class="section-title">タイムテーブル</h2>
+    <table class="timetable">
+      <thead>
+        <tr>
+          <th>時間</th>
+          <th>内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each timetable}}
+        <tr>
+          <td class="time">{{this.time}}</td>
+          <td>{{this.content}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 対象者 -->
+  <section class="section target">
+    <h2 class="section-title">こんな方におすすめ</h2>
+    <div class="target-list">
+      {{#each targets}}
+      <div class="target-item">
+        <div class="target-icon">&#10003;</div>
+        <span>{{this}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>{{cta_title}}</h2>
+    <p>{{cta_subtitle}}</p>
+    <a href="{{cta_url}}" class="btn-white">お申し込みはこちら</a>
+  </section>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="footer-logos">
+      <img src="{{logo_url}}" alt="{{company_name}}">
+      {{#if partner_logo_url}}
+      <img src="{{partner_logo_url}}" alt="{{partner_name}}">
+      {{/if}}
+    </div>
+    <p class="footer-text">{{copyright}}</p>
+  </footer>
+</body>
+</html>
